@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:prj3beer.ViewModels"
+             mc:Ignorable="d"
+             x:Class="prj3beer.Views.StatusPage"
+             AutomationId="StatusPage"
+             Title="Status Page"
+             xmlns:src="clr-namespace:prj3beer.Services">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <src:CelsiusFahrenheitConverter x:Key="tempConverter" />
+            <src:TimerButtonConverter x:Key="timerBtnConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <!-- Main stacklayout-->
+        <StackLayout VerticalOptions="Center" >
+            <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
+                <Label x:Name="currentTemperature" 
+                       AutomationId="currentTemperature"
+                       Text="{Binding CurrentTemp, Converter={StaticResource tempConverter}, StringFormat='{0:g}'}" 
+                       FontSize="38"
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center" 
+                       MinimumWidthRequest="3">
+                    <Label.BindingContext>
+                        <vm:StatusViewModel PropertyChanged="UpdateViewModel"/>
+                    </Label.BindingContext>
+                </Label>
+                <Image MinimumHeightRequest="200" 
+                       Source="beverageImage" 
+                       x:Name="beverageImage" 
+                       AutomationId="beverageImage" 
+                       HorizontalOptions="CenterAndExpand" 
+                       VerticalOptions="CenterAndExpand"/>
+                <Label x:Name="beverageName" 
+                       AutomationId="beverageName" 
+                       HorizontalOptions="FillAndExpand" />
+                <Label x:Name="brandName" 
+                       AutomationId="brandName" />
+            </StackLayout>
+            <!-- STORY 04 XAML -->
+            <StackLayout x:Name="PreferredTempControls">
+                <StackLayout x:Name="TempModeControls" AutomationId="TempModeControls">
+                    <Entry AutomationId="currentTarget" x:Name="TemperatureInput" 
+                           Keyboard="Numeric" Text="{Binding Source={x:Reference TemperatureStepper},Path=Value,Mode=TwoWay}"
+                           HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" Focused="SelectEntryText"/>
+                    <Label x:Name="Degree" Text="{Binding Scale}"/>
+                </StackLayout>
+                <StackLayout HorizontalOptions="Center">
+                    <Stepper AutomationId="TempStepper" x:Name="TemperatureStepper"
+                        Value="{Binding PreferredTemperatureString, Mode=TwoWay}"
+                        Maximum="{Binding Maximum}" Minimum="{Binding Minimum}" Increment="1" 
+                        HorizontalOptions="Center" ValueChanged="TemperatureStepperChanged"/>
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout x:Name="TimeModeControls" Orientation="Vertical" Spacing="10" HorizontalOptions="CenterAndExpand">
+
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <StackLayout Orientation="Vertical">
+                    <Picker x:Name="hourPicker" SelectedIndex="1" AutomationId="hourPicker" IsEnabled="{Binding HasActiveTimer, Converter={StaticResource timerBtnConverter}}" />
+                    <Label Text="hours" />
+                </StackLayout>
+
+                <StackLayout Orientation="Vertical">
+                        <Picker x:Name="minutePicker" SelectedIndex="1" AutomationId="minutePicker" IsEnabled="{Binding HasActiveTimer, Converter={StaticResource timerBtnConverter}}"  />
+                    <Label Text="minutes" />
+                </StackLayout>
+
+                <StackLayout Orientation="Vertical">
+
+                        <Picker x:Name="secondPicker" SelectedIndex="1" AutomationId="secondPicker" IsEnabled="{Binding HasActiveTimer, Converter={StaticResource timerBtnConverter}}" />
+                        <Label Text="seconds" />
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <Button Text="Start Timer" Clicked="StartTimerClicked" x:Name="btnStart" AutomationId="btnStart" IsEnabled="{Binding HasActiveTimer, Converter={StaticResource timerBtnConverter}}" />
+                    <Button x:Name="btnCancel" Text="Cancel" Clicked="OnCancelTimerButtonClicked" IsEnabled="{Binding HasActiveTimer}" AutomationId="btnCancel" />
+                </StackLayout>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <ImageButton x:Name="FavouriteButton" AutomationId="FavouriteButton" Clicked="FavouriteButtonClicked" />
+                <Button x:Name="ShareButton" AutomationId="ShareButton" Clicked="ShareButtonClicked" Text="Share"/> <!-- Command="ShareBeverage" /> -->
+              <!-- potential if using image button <ImageButton x:Name="ShareButton" AutomationId="ShareButton" Clicked="ShareButtonClicked" Command="ShareBeverage" Source="share" /> -->
+            </StackLayout>
+        </StackLayout>
+
+    </ContentPage.Content>
+    <ContentPage.ToolbarItems x:Uid="Toolbar">
+        <ToolbarItem x:Name="btnFriends"    AutomationId="btnFriends"   Text="Friends"      Order="Primary"     Clicked="Friends_Clicked"  />
+        <ToolbarItem x:Name="btnSettings"   AutomationId="btnSettings"  Text="Settings"     Order="Secondary"   Clicked="Settings_Clicked" />
+        <ToolbarItem x:Name="btnSignIn"     AutomationId="btnSignIn"    Text="Sign In"      Order="Secondary"   Clicked="SignInOut_Clicked"/>
+    </ContentPage.ToolbarItems>
+</ContentPage>

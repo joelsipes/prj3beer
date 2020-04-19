@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="prj3beer.Views.BeverageSelectPage"
+             Title="Select A Beverage">
+    <ContentPage.Content>
+        <StackLayout>
+            <SearchBar x:Name="searchBeverage" AutomationId="searchBeverage" TextChanged="SearchChanged" Placeholder="Please enter a beverage, type, or brand!!"  Focused="SearchBeverageFocused" Unfocused="SearchBeverageUnfocused"/>
+            <Label x:Name="errorLabel" AutomationId="errorLabel" />
+            <ActivityIndicator x:Name="loadingSpinner" AutomationId="loadingSpinner" />
+            <Label x:Name="NoFavouritesLabel" AutomationId="NoFavouritesLabel" Text="Select a beverage and favourite it to view it here!" HorizontalOptions="Center"/>
+            <CarouselView x:Name="FavouritesCarousel" AutomationId="FavouritesCarousel" PeekAreaInsets="120" ItemsSource="{Binding Preference}">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Frame BackgroundColor="Transparent" HasShadow="True" BorderColor="Transparent" CornerRadius="5" Margin="0" Padding="0">
+                                <StackLayout Orientation="Vertical" HorizontalOptions="Center">
+                                    <Image x:Name="{Binding BeverageID}" AutomationId="{Binding BeverageID}" Source="{Binding ImagePath}"
+                                           WidthRequest="200" HeightRequest="200" MinimumWidthRequest="200">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="FavoriteBeverage_Tapped" NumberOfTapsRequired="1"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Label Text="{Binding BevName}" HorizontalOptions="Center"/>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+            <ListView x:Name="beverageListView" AutomationId="beverageListView" ItemTapped="BeverageTapped"/>
+        </StackLayout>
+    </ContentPage.Content>
+    <ContentPage.ToolbarItems x:Uid="Toolbar">
+        <ToolbarItem x:Name="btnFriends"    AutomationId="btnFriends"   Text="Friends"      Order="Primary"     Clicked="Friends_Clicked"  />
+        <ToolbarItem x:Name="btnSettings"   AutomationId="btnSettings"  Text="Settings"     Order="Secondary"   Clicked="Settings_Clicked" />
+        <ToolbarItem x:Name="btnSignIn"     AutomationId="btnSignIn"    Text="Sign In"      Order="Secondary"   Clicked="SignInOut_Clicked"/>
+    </ContentPage.ToolbarItems>
+</ContentPage>

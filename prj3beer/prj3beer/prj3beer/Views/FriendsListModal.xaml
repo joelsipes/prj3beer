@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="prj3beer.Views.FriendsListModal"
+             Title="Friends">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Please Sign In To Facebook To See Your Friends"
+                   AutomationId="Message"
+                   x:Name="Message"
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand" 
+                   IsVisible="True"
+                   Padding="0,10,0,0"/>
+            <ListView AutomationId="FriendsList" x:Name="FriendsList" ItemsSource="{Binding Friend}" RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell IsEnabled="False"> <!-- Set it True to be clickeable -->
+                            <StackLayout Padding="15,0,15,0" VerticalOptions="FillAndExpand" Orientation="Horizontal" Spacing="10">
+                                <Image Source="{Binding ImageURI}" WidthRequest="60" HeightRequest="60" VerticalOptions="Center"/>
+                                <Label Text="{Binding Name}" VerticalOptions="Center" VerticalTextAlignment="Center" FontSize="Large" TextColor="DarkBlue"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Close" Clicked="Close_Clicked" IconImageSource="outline_clear_black_24.png"/>
+    </ContentPage.ToolbarItems>
+</ContentPage>
